@@ -11,10 +11,25 @@
 
 			#container
 			{
-				background: url(dragon.png);
 				width: 500px;
 				height: 750px;
 				margin: 10px auto 0 auto;
+			}
+
+			.row
+			{
+				height: 5px;
+				width: 100%;
+			}
+
+			.square
+			{
+				width: 5px;
+				height: 5px;
+				float: left;
+				background-repeat: no-repeat;
+				background-size: 500px 750px;
+				opacity: 1;
 			}
 
 			img
@@ -27,11 +42,92 @@
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 		<script>
+			let vday = 
+			{
+				maxTransitionTime: 10000,
+				getRandomImage: function()
+				{
+					var index = Math.floor(Math.random() * 9);
 
+					return "'img" + index + ".jpg'";
+				},
+				fillContainer: function()
+				{
+					var imgUrl = this.getRandomImage();
+
+					for(var i = 0; i < 150; i++) 
+					{
+						var row = $("<div></div>");
+						row.addClass("row");
+
+						for(var j = 0; j < 100; j++) 
+						{
+							var square = $("<div></div>");
+							square.addClass("square");
+							square.attr("id", j + "_" + i);
+							square.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (j * 5) + "px -" + (i * 5) + "px");
+
+							row.append(square);
+						}
+
+						$("#container").append(row);
+					}
+
+					this.transition(this.maxTransitionTime);
+				},
+				startTransition: function(ms)
+				{
+					setInterval(
+						()=>
+						{
+							this.transition(ms)
+						},
+						ms
+					);
+				},
+				transition: function(ms)
+				{
+					var nextImgUrl = this.getRandomImage();
+					var squares = $(".square");
+
+					for(var i = 0; i < squares.length; i++)
+					{
+						var id = squares[i].id;
+						var arrId = id.split("_");
+						var x = arrId[0];
+						var y = arrId[1];
+
+						var transitionTIme = Math.floor(Math.random() * (ms / 2));
+
+						$("#" + id).animate
+						(
+							{
+								opacity: 0
+							},
+							transitionTIme
+						);
+
+						setTimeout(
+							()=>
+							{
+								$("#" + id).attr("style", "background-image:url(" + nextImgUrl + ");background-position:-" + (x * 5) + "px -" + (y * 5) + "px");
+								$("#" + id).animate
+								(
+									{
+										opacity: 1
+									},
+									transitionTIme
+								);
+							},
+							ms / 2
+						)
+					}
+				}
+			}
 		</script>
 	</head>
 
-	<body>
+	<body onload="vday.fillContainer();">
 		<div id="container">
 
 		</div>
