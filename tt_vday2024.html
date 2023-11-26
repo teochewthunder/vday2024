@@ -44,7 +44,7 @@
 		<script>
 			let vday = 
 			{
-				maxTransitionTime: 10000,
+				maxTransitionTime: 20000,
 				getRandomImage: function()
 				{
 					var index = Math.floor(Math.random() * 9);
@@ -88,40 +88,45 @@
 				transition: function(ms)
 				{
 					var nextImgUrl = this.getRandomImage();
+
 					var squares = $(".square");
 
 					for(var i = 0; i < squares.length; i++)
 					{
 						var id = squares[i].id;
-						var arrId = id.split("_");
-						var x = arrId[0];
-						var y = arrId[1];
-
-						var transitionTIme = Math.floor(Math.random() * (ms / 2));
 
 						$("#" + id).animate
 						(
 							{
 								opacity: 0
 							},
-							transitionTIme
+							0.3 * i
 						);
+					}
 
-						setTimeout(
-							()=>
+					setTimeout(
+						()=>
+						{
+							for(var i = 0; i < squares.length; i++)
 							{
-								$("#" + id).attr("style", "background-image:url(" + nextImgUrl + ");background-position:-" + (x * 5) + "px -" + (y * 5) + "px");
+								var id = squares[i].id;
+								var arrId = id.split("_");
+								var x = arrId[0];
+								var y = arrId[1];
+
+								$("#" + id).attr("style", "background-image:url(" + nextImgUrl + ");background-position:-" + (x * 5) + "px -" + (y * 5) + "px;opacity:0");
+
 								$("#" + id).animate
 								(
 									{
 										opacity: 1
 									},
-									transitionTIme
+									(0.3 * i) + i
 								);
-							},
-							ms / 2
-						)
-					}
+							}
+						},
+						ms / 2
+					)
 				}
 			}
 		</script>
