@@ -18,15 +18,21 @@
 
 			.row
 			{
-				height: 5px;
+				height: 10px;
 				width: 100%;
 			}
 
 			.square
 			{
-				width: 5px;
-				height: 5px;
+				width: 10px;
+				height: 10px;
 				float: left;
+			}
+
+			.square_contents
+			{
+				width: 100%;
+				height: 100%;
 				background-repeat: no-repeat;
 				background-size: 500px 750px;
 				opacity: 1;
@@ -38,13 +44,13 @@
 			}
 		</style>
 
-		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+		<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<!-- 		<script src="https://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
+ -->
 		<script>
 			let vday = 
 			{
-				maxTransitionTime: 20000,
+				maxTransitionTime: 1000,
 				getRandomImage: function()
 				{
 					var index = Math.floor(Math.random() * 9);
@@ -55,18 +61,23 @@
 				{
 					var imgUrl = this.getRandomImage();
 
-					for(var i = 0; i < 150; i++) 
+					for(var i = 0; i < 75; i++) 
 					{
 						var row = $("<div></div>");
 						row.addClass("row");
 
-						for(var j = 0; j < 100; j++) 
+						for(var j = 0; j < 50; j++) 
 						{
 							var square = $("<div></div>");
 							square.addClass("square");
-							square.attr("id", j + "_" + i);
-							square.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (j * 5) + "px -" + (i * 5) + "px");
 
+							var content = $("<div></div>");
+							content.addClass("square_contents");
+							content.attr("data-row", i);
+							content.attr("data-col", j);
+							content.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (j * 10) + "px -" + (i * 10) + "px;");
+
+							square.append(content);
 							row.append(square);
 						}
 
@@ -87,46 +98,32 @@
 				},
 				transition: function(ms)
 				{
-					var nextImgUrl = this.getRandomImage();
+					var contents = $(".square_contents");
 
-					var squares = $(".square");
+					for(var i = 0; i < contents.length; i++)
+					{	
+						var imgUrl = this.getRandomImage();
 
-					for(var i = 0; i < squares.length; i++)
-					{
-						var id = squares[i].id;
+						var transitionTime = Math.floor(Math.random() * ms) + 1000;		
+						$(contents[i]).fadeOut(
+							transitionTime,
+							function() {
+								setTimeout(
+									()=>
+									{
+										var row = $(this).attr("data-row");
+										var col = $(this).attr("data-col");
+										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * 10) + "px -" + (row * 10) + "px;");
 
-						$("#" + id).animate
-						(
-							{
-								opacity: 0
-							},
-							0.3 * i
+										$(this).fadeIn(
+											transitionTime,
+										);
+									},
+									transitionTime
+								)
+							}
 						);
 					}
-
-					setTimeout(
-						()=>
-						{
-							for(var i = 0; i < squares.length; i++)
-							{
-								var id = squares[i].id;
-								var arrId = id.split("_");
-								var x = arrId[0];
-								var y = arrId[1];
-
-								$("#" + id).attr("style", "background-image:url(" + nextImgUrl + ");background-position:-" + (x * 5) + "px -" + (y * 5) + "px;opacity:0");
-
-								$("#" + id).animate
-								(
-									{
-										opacity: 1
-									},
-									(0.3 * i) + i
-								);
-							}
-						},
-						ms / 2
-					)
 				}
 			}
 		</script>
