@@ -45,12 +45,12 @@
 		</style>
 
 		<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<!-- 		<script src="https://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
- -->
+		<script src="https://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
+
 		<script>
 			let vday = 
 			{
-				maxTransitionTime: 1000,
+				maxTransitionTime: 5000,
 				getRandomImage: function()
 				{
 					var index = Math.floor(Math.random() * 9);
@@ -59,8 +59,6 @@
 				},
 				fillContainer: function()
 				{
-					var imgUrl = this.getRandomImage();
-
 					for(var i = 0; i < 75; i++) 
 					{
 						var row = $("<div></div>");
@@ -75,7 +73,6 @@
 							content.addClass("square_contents");
 							content.attr("data-row", i);
 							content.attr("data-col", j);
-							content.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (j * 10) + "px -" + (i * 10) + "px;");
 
 							square.append(content);
 							row.append(square);
@@ -84,43 +81,48 @@
 						$("#container").append(row);
 					}
 
-					this.transition(this.maxTransitionTime);
+					this.startTransition(this.maxTransitionTime);
 				},
 				startTransition: function(ms)
 				{
 					setInterval(
-						()=>
-						{
-							this.transition(ms)
+						()=>{
+							this.transition(ms / 4);
 						},
-						ms
+						ms * 2
 					);
 				},
 				transition: function(ms)
 				{
 					var contents = $(".square_contents");
+					var imgUrl = this.getRandomImage();
 
 					for(var i = 0; i < contents.length; i++)
 					{	
-						var imgUrl = this.getRandomImage();
+						var row = $(contents[i]).attr("data-row");
+						var col = $(contents[i]).attr("data-col");
+						$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * 10) + "px -" + (row * 10) + "px;opacity:0");
 
-						var transitionTime = Math.floor(Math.random() * ms) + 1000;		
-						$(contents[i]).fadeOut(
-							transitionTime,
+						var transitionTime = Math.floor(Math.random() * ms);		
+						$(contents[i]).animate(
+							{
+								opacity: 1
+							},
+							(i * 0.8) + transitionTime,
 							function() {
 								setTimeout(
-									()=>
+									() =>
 									{
-										var row = $(this).attr("data-row");
-										var col = $(this).attr("data-col");
-										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * 10) + "px -" + (row * 10) + "px;");
-
-										$(this).fadeIn(
-											transitionTime,
+										$(this).animate(
+											{
+												opacity: 0
+											},
+											(i * 0.8) + transitionTime											
 										);
-									},
-									transitionTime
+									},									
+									ms
 								)
+
 							}
 						);
 					}
