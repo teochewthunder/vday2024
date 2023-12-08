@@ -18,24 +18,21 @@
 
 			.row
 			{
-				height: 10px;
+				height: 50px;
 				width: 100%;
 			}
 
 			.square
 			{
-				width: 10px;
-				height: 10px;
+				width: 50px;
+				height: 50px;
 				float: left;
 			}
 
 			.square_contents
 			{
-				width: 100%;
-				height: 100%;
 				background-repeat: no-repeat;
 				background-size: 500px 750px;
-				opacity: 1;
 			}
 
 			img
@@ -51,6 +48,7 @@
 			let vday = 
 			{
 				maxTransitionTime: 5000,
+				squareSize: 50,
 				getRandomImage: function()
 				{
 					var index = Math.floor(Math.random() * 9);
@@ -59,12 +57,12 @@
 				},
 				fillContainer: function()
 				{
-					for(var i = 0; i < 75; i++) 
+					for(var i = 0; i < 750 / this.squareSize; i++) 
 					{
 						var row = $("<div></div>");
 						row.addClass("row");
 
-						for(var j = 0; j < 50; j++) 
+						for(var j = 0; j < 500 / this.squareSize; j++) 
 						{
 							var square = $("<div></div>");
 							square.addClass("square");
@@ -87,9 +85,9 @@
 				{
 					setInterval(
 						()=>{
-							this.transition(ms / 4);
+							this.transition(ms / 10);
 						},
-						ms * 2
+						ms
 					);
 				},
 				transition: function(ms)
@@ -97,34 +95,79 @@
 					var contents = $(".square_contents");
 					var imgUrl = this.getRandomImage();
 
+					var animationType = Math.floor(Math.random() * 2);
+
 					for(var i = 0; i < contents.length; i++)
 					{	
-						var row = $(contents[i]).attr("data-row");
-						var col = $(contents[i]).attr("data-col");
-						$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * 10) + "px -" + (row * 10) + "px;opacity:0");
+						switch (animationType)
+						{
+							case 0:
+								var row = $(contents[i]).attr("data-row");
+								var col = $(contents[i]).attr("data-col");
+								$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:0;width:100%;height:100%");
 
-						var transitionTime = Math.floor(Math.random() * ms);		
-						$(contents[i]).animate(
-							{
-								opacity: 1
-							},
-							(i * 0.8) + transitionTime,
-							function() {
-								setTimeout(
-									() =>
+								var transitionTime = Math.floor(Math.random() * ms);		
+								$(contents[i]).animate(
 									{
-										$(this).animate(
+										opacity: 1
+									},
+									(i * 10) + transitionTime,
+									function() {
+										setTimeout(
+											() =>
 											{
-												opacity: 0
-											},
-											(i * 0.8) + transitionTime											
-										);
-									},									
-									ms
-								)
+												$(this).animate(
+													{
+														opacity: 0
+													},
+													(i * 10) + transitionTime											
+												);
+											},									
+											ms
+										)
 
-							}
-						);
+									}
+								);
+
+								break;
+
+							//case 1:
+								//break;
+
+							//case 2:
+								//break;
+
+							default:
+								var row = $(contents[i]).attr("data-row");
+								var col = $(contents[i]).attr("data-col");
+								$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:1;width:0px;height:50px");
+
+
+								var transitionTime = Math.floor(Math.random() * ms);		
+								$(contents[i]).animate(
+									{
+										width: "50px"
+									},
+									(i * 10) + transitionTime,
+									function() {
+										setTimeout(
+											() =>
+											{
+												$(this).animate(
+													{
+														width: "0px"
+													},
+													(i * 10) + transitionTime
+												);
+											},									
+											ms
+										)
+
+									}
+								);
+
+								break;
+						}
 					}
 				}
 			}
