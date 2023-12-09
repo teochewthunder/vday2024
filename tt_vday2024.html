@@ -33,6 +33,7 @@
 			{
 				background-repeat: no-repeat;
 				background-size: 500px 750px;
+				margin: 50% auto 0 auto;
 			}
 
 			img
@@ -107,26 +108,19 @@
 								$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:0;width:100%;height:100%");
 
 								var transitionTime = Math.floor(Math.random() * ms);		
-								$(contents[i]).animate(
+								$(contents[i])
+								.animate(
 									{
 										opacity: 1
 									},
-									(i * 10) + transitionTime,
-									function() {
-										setTimeout(
-											() =>
-											{
-												$(this).animate(
-													{
-														opacity: 0
-													},
-													(i * 10) + transitionTime											
-												);
-											},									
-											ms
-										)
-
-									}
+									(i * 10) + transitionTime
+								)
+								.delay(ms * 2)
+								.animate(
+									{
+										opacity: 0
+									},
+									(i * 10) + transitionTime
 								);
 
 								break;
@@ -140,30 +134,25 @@
 							default:
 								var row = $(contents[i]).attr("data-row");
 								var col = $(contents[i]).attr("data-col");
-								$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:1;width:0px;height:50px");
+								$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:1;width:0px;height:0px;");
 
 
 								var transitionTime = Math.floor(Math.random() * ms);		
-								$(contents[i]).animate(
+								$(contents[i])
+								.animate(
 									{
-										width: "50px"
+										width: "50px",
+										height: "50px"
 									},
-									(i * 10) + transitionTime,
-									function() {
-										setTimeout(
-											() =>
-											{
-												$(this).animate(
-													{
-														width: "0px"
-													},
-													(i * 10) + transitionTime
-												);
-											},									
-											ms
-										)
-
-									}
+									(i * 10) + transitionTime
+								)
+								.delay(ms * 2)
+								.animate(
+									{
+										width: "0px",
+										height: "0px"
+									},
+									(i * 10) + transitionTime
 								);
 
 								break;
