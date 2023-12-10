@@ -43,8 +43,8 @@
 		</style>
 
 		<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-		<script src="https://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
-
+<!-- 		<script src="https://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
+ -->
 		<script>
 			let vday = 
 			{
@@ -96,7 +96,7 @@
 					var contents = $(".square_contents");
 					var imgUrl = this.getRandomImage();
 
-					var animationType = Math.floor(Math.random() * 2);
+					var animationType = Math.floor(Math.random() * 20);
 
 					for(var i = 0; i < contents.length; i++)
 					{	
@@ -125,13 +125,7 @@
 
 								break;
 
-							//case 1:
-								//break;
-
-							//case 2:
-								//break;
-
-							default:
+							case 1:
 								var row = $(contents[i]).attr("data-row");
 								var col = $(contents[i]).attr("data-col");
 								$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:1;width:0px;height:0px;");
@@ -151,6 +145,30 @@
 									{
 										width: "0px",
 										height: "0px"
+									},
+									(i * 10) + transitionTime
+								);
+
+								break;
+
+							default:
+								var row = $(contents[i]).attr("data-row");
+								var col = $(contents[i]).attr("data-col");
+								$(contents[i]).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:1;width:0px;height:" + this.squareSize + "px;");
+
+
+								var transitionTime = Math.floor(Math.random() * ms);		
+								$(contents[i])
+								.animate(
+									{
+										width: "50px"
+									},
+									(i * 10) + transitionTime
+								)
+								.delay(ms * 2)
+								.animate(
+									{
+										width: "0px",
 									},
 									(i * 10) + transitionTime
 								);
