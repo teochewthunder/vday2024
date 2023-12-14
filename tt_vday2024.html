@@ -56,6 +56,15 @@
 
 					return "'img" + index + ".jpg'";
 				},
+				getSequenceTime: function(index, ms, type)
+				{
+					switch (type)
+					{
+						case 1: return (index * 10) + ms;
+						case 2: return ((index % 10) * 150) + ms;
+						default: return ((10 - (index % 10)) * 150) + ms;
+					}
+				},				
 				fillContainer: function()
 				{
 					var imgUrl = this.getRandomImage();
@@ -99,7 +108,8 @@
 					var contents = $(".square_contents");
 					var imgUrl = this.getRandomImage();
 
-					var animationType = Math.floor(Math.random() * 20) + 100;
+					var animationType = Math.floor(Math.random() * 3);
+					var sequenceType = Math.floor(Math.random() * 3);
 
 					for(var i = 0; i < contents.length; i++)
 					{	
@@ -109,55 +119,62 @@
 						switch (animationType)
 						{
 							case 0:
-								var transitionTime = Math.floor(Math.random() * ms);		
+								var transitionTime = Math.floor(Math.random() * ms);
+								var sequenceTime = this.getSequenceTime(i, transitionTime, sequenceType);		
 								$(contents[i])
 								.animate(
 									{
 										opacity: 0
 									},
-									(i * 10) + transitionTime
+									sequenceTime,
+									function() {
+										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * 50) + "px -" + ($(this).attr("data-row") * 50) + "px;opacity:0;width:50px;height:50px")
+									}
 								)
 								.delay(ms * 2)
-								.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:0;width:50px;height:50px")
 								.animate(
 									{
 										opacity: 1
 									},
-									(i * 10) + transitionTime
+									sequenceTime
 								);
 
 								break;
 
 							case 1:
-								var transitionTime = Math.floor(Math.random() * ms);		
+								var transitionTime = Math.floor(Math.random() * ms);
+								var sequenceTime = this.getSequenceTime(i, transitionTime, sequenceType);		
 								$(contents[i])
 								.animate(
 									{
 										width: "0%",
 										height: "0%"
 									},
-									(i * 10) + transitionTime
+									sequenceTime,
+									function() {
+										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * 50) + "px -" + ($(this).attr("data-row") * 50) + "px;opacity:1;width:0px;height:0px")
+									}
 								)
 								.delay(ms * 2)
-								.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (col * this.squareSize) + "px -" + (row * this.squareSize) + "px;opacity:1;width:0px;height:0px")
 								.animate(
 									{
 										width: "50px",
 										height: "50px"
 									},
-									(i * 10) + transitionTime
+									sequenceTime
 								);
 
 								break;
 
 							default:
-								var transitionTime = Math.floor(Math.random() * ms);		
+								var transitionTime = Math.floor(Math.random() * ms);
+								var sequenceTime = this.getSequenceTime(i, transitionTime, sequenceType);		
 								$(contents[i])
 								.animate(
 									{
 										width: "0px"
 									},
-									(i * 10) + transitionTime,
+									sequenceTime,
 									function() {
 										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * 50) + "px -" + ($(this).attr("data-row") * 50) + "px;opacity:1;width:0px;height:50px")
 									}
@@ -167,7 +184,7 @@
 									{
 										width: "50px",
 									},
-									(i * 10) + transitionTime
+									sequenceTime
 								);
 
 								break;
