@@ -60,9 +60,9 @@
 				{
 					switch (type)
 					{
-						case 1: return (index * 10) + ms;
-						case 2: return ((index % 10) * 150) + ms;
-						case 3: return ((10 - (index % 10)) * 150) + ms;
+						case 0: return (index * 10) + ms;
+						case 1: return ((index % 10) * 150) + ms;
+						case 2: return ((10 - (index % 10)) * 150) + ms;
 						default: return ((index % 12) * 100) + ms;
 					}
 				},				
@@ -112,7 +112,7 @@
 					var imgUrl = this.getRandomImage();
 
 					var animationType = Math.floor(Math.random() * 3);
-					var sequenceType = Math.floor(Math.random() * 3) + 5;
+					var sequenceType = Math.floor(Math.random() * 5);
 
 					for(var i = 0; i < contents.length; i++)
 					{	
