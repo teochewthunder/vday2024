@@ -43,8 +43,7 @@
 		</style>
 
 		<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<!-- 		<script src="https://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
- -->
+
 		<script>
 			let vday = 
 			{
@@ -84,7 +83,7 @@
 							content.addClass("square_contents");
 							content.attr("data-row", i);
 							content.attr("data-col", j);
-							content.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (j * this.squareSize) + "px -" + (i * this.squareSize) + "px;opacity:1;width:50px;height:50px");
+							content.attr("style", "background-image:url(" + imgUrl + ");background-position:-" + (j * this.squareSize) + "px -" + (i * this.squareSize) + "px;opacity:1;width:" +  this.squareSize + "px;height:" + this.squareSize + "px");
 
 							square.append(content);
 							row.append(square);
