@@ -18,14 +18,14 @@
 
 			.row
 			{
-				height: 50px;
+				height: 25px;
 				width: 100%;
 			}
 
 			.square
 			{
-				width: 50px;
-				height: 50px;
+				width: 25px;
+				height: 25px;
 				float: left;
 			}
 
@@ -47,8 +47,8 @@
 		<script>
 			let vday = 
 			{
-				maxTransitionTime: 5000,
-				squareSize: 50,
+				maxTransitionTime: 10000,
+				squareSize: 25,
 				getRandomImage: function()
 				{
 					var index = Math.floor(Math.random() * 9);
@@ -59,10 +59,10 @@
 				{
 					switch (type)
 					{
-						case 0: return (index * 10) + ms;
-						case 1: return ((index % 10) * 150) + ms;
-						case 2: return ((10 - (index % 10)) * 150) + ms;
-						default: return ((index % 12) * 100) + ms;
+						case 0: return (index * 1.5) + ms;
+						case 1: return ((index % 10) * 10) + ms;
+						case 2: return ((10 - (index % 10)) * 10) + ms;
+						default: return ((index % 150) * 10) + ms;
 					}
 				},				
 				fillContainer: function()
@@ -96,16 +96,16 @@
 				},
 				startTransition: function(ms)
 				{
-					this.transition(ms / 10);
+					this.transition(ms / 10, this.squareSize);
 
 					setInterval(
 						()=>{
-							this.transition(ms / 10);
+							this.transition(ms / 10, this.squareSize);
 						},
 						ms
 					);
 				},
-				transition: function(ms)
+				transition: function(ms, squareSize)
 				{
 					var contents = $(".square_contents");
 					var imgUrl = this.getRandomImage();
@@ -130,7 +130,7 @@
 									},
 									sequenceTime,
 									function() {
-										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * 50) + "px -" + ($(this).attr("data-row") * 50) + "px;opacity:0;width:50px;height:50px")
+										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * squareSize) + "px -" + ($(this).attr("data-row") * squareSize) + "px;opacity:0;width:" + squareSize + "px;height:" + squareSize + "px")
 									}
 								)
 								.delay(ms * 2)
@@ -154,14 +154,14 @@
 									},
 									sequenceTime,
 									function() {
-										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * 50) + "px -" + ($(this).attr("data-row") * 50) + "px;opacity:1;width:0px;height:0px")
+										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * squareSize) + "px -" + ($(this).attr("data-row") * squareSize) + "px;opacity:1;width:0px;height:0px")
 									}
 								)
 								.delay(ms * 2)
 								.animate(
 									{
-										width: "50px",
-										height: "50px"
+										width: squareSize + "px",
+										height: squareSize + "px"
 									},
 									sequenceTime
 								);
@@ -178,13 +178,13 @@
 									},
 									sequenceTime,
 									function() {
-										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * 50) + "px -" + ($(this).attr("data-row") * 50) + "px;opacity:1;width:0px;height:50px")
+										$(this).attr("style", "background-image:url(" + imgUrl + ");background-position:-" + ($(this).attr("data-col") * squareSize) + "px -" + ($(this).attr("data-row") * squareSize) + "px;opacity:1;width:0px;height:" + squareSize + "px")
 									}
 								)
 								.delay(ms * 2)
 								.animate(
 									{
-										width: "50px",
+										width: squareSize + "px",
 									},
 									sequenceTime
 								);
