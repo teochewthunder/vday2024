@@ -1,4 +1,4 @@
-# Valentine's Day Animation (TBC)
+# Valentine's Day Animation
 The animation consists of 10 AI-generated images. Each image will display and fade out, then fade in with a different image.
 
 1. There is a container with several squares.
